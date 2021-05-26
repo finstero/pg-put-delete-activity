@@ -42,10 +42,17 @@ router.post('/',  (req, res) => {
 router.put('/:id', (req, res) => {
   const bookId = req.params.id;
 
-  let isRead = req.body.isRead;
-
-  if (isRead == 'true'){
+  let readStatus = req.body.readStatus;
+  // console.log('what is readStatus', req.body.readStatus);
+  if (readStatus == 'false'){
     queryString = 'UPDATE "books" SET "isRead"=true WHERE "books".id = $1';
+  }
+  else if (readStatus == 'true'){
+    queryString = 'UPDATE "books" SET "isRead"=false WHERE "books".id = $1';
+  }
+  else {
+    res.sendStatus(500);
+    return;
   }
 
   pool.query(queryString, [bookId])

@@ -15,19 +15,20 @@ function addClickHandlers() {
 }
 
 function markReadHandler (){
-  console.log('clicked mark as read');
-  markAsRead($(this).data("id"));
+  // console.log('clicked mark as read');
+  markAsRead($(this).data("id"), $(this).data("read"));
+  // console.log('is data working?', $(this).data("read"));
 }
 
-function markAsRead (bookId){
+function markAsRead (bookId, readStatus){
   $.ajax({
     method: 'PUT',
     url: `/books/${bookId}`,
     data: {
-      isRead: true
+      readStatus: readStatus
     }
   }).then (response => {
-    console.log('tried to mark as read');
+    console.log('marked as read');
     refreshBooks();
   }).catch (err => {
     console.log('you have not read this', err);
@@ -101,9 +102,10 @@ function renderBooks(books) {
         <td>${book.title}</td>
         <td>${book.author}</td>
         <td>${book.isRead}</td>
-        <td><button class="markRead" data-id="${book.id}">Mark as Read</button></td>
+        <td><button class="markRead" data-id="${book.id}" data-read="${book.isRead}">Mark as Read</button></td>
         <td><button class="deleteBook" data-id="${book.id}">Delete Book</button></td>
       </tr>
     `);
+    // console.log('is read info', book.isRead);
   }
 }
